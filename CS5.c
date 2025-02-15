@@ -3,6 +3,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include<string.h>
+#include<math.h>
 
 struct user{
 	char username[100];
@@ -18,8 +19,7 @@ struct user{
 struct user user1;
 char username[100];
 int logKey=1;
-time_t startTime=time(NULL);
-time_t endTime;
+
 //okay okay i ain't that smart, i did chatgpt the clearScreen function
 void clearScreen() {
     #ifdef _WIN32
@@ -191,6 +191,8 @@ int home(){
 		    	while(fscanf(fptr3,"%s %d %.1f %.1f %.1f %d %.1f %.1f %d",user1.username,&user1.timePlayed,&user1.ticTacToeHighScore,&user1.rockPaperScissorsHighScore,&user1.guessTheNumberHighScore,&user1.guessesLeft,&user1.headsOrTailsHighScore,&user1.rememberTheNumber,&user1.digit)!=EOF){
 		    		if(strcmp(user1.username,username)==0){
 		    			printf("LOGIN SUCCESSFUL!!!\n");
+		    			int startTime=time(NULL);
+		    			int endTime;
 	printf("=============================================================================\n");
 	printf("                                  CS5 Games\n");
 	printf("=============================================================================\n");
@@ -276,10 +278,10 @@ int home(){
 				}
 				fprintf(temp2,"%s %d %.1f %.1f %.1f %d %.1f %.1f %d\n",temp.username,temp.timePlayed,temp.ticTacToeHighScore,temp.rockPaperScissorsHighScore,temp.guessTheNumberHighScore,temp.guessesLeft,temp.headsOrTailsHighScore,temp.rememberTheNumber,temp.digit);
 			};
-			fclose(fptr5);
-			fclose(temp2);
 			remove("users.txt");
 			rename("temp.txt","users.txt");
+			fclose(fptr5);
+			fclose(temp2);
 			}
 			home();
 		break;
@@ -394,8 +396,9 @@ int home(){
 		    	if(option==2){
 		    		break;
 				}
-				printf("\nThe computer will generate a random number from 1 to 100 without telling you and you have to guess the number within 10 tries. If your guess is more than 10 units higher than\
- the generated number ,the console will print \"Too High\" , if it is less than 10 units higher, the console will print \"High\" and correspondingly if your guess is more than 10 units lower, the console will print \"Too Low\",and if it is less than 10 units lower, the console will print \"Low\"\n");
+				printf("\nThe computer will generate a random number from 1 to 100 without telling you and you have to guess the number within 10 tries.\n");
+				//If your guess is more than 10 units higher than\
+ the generated number ,the console will print \"Too High\" , if it is less than 10 units higher, the console will print \"High\" and correspondingly if your guess is more than 10 units lower, the console will print \"Too Low\",and if it is less than 10 units lower, the console will print \"Low\"
 				getch();
 				srand(time(0));
 				int randnum=(rand()%(100-1+1))+1,guess=10,num=-1;
@@ -629,8 +632,10 @@ int home(){
 		break;
 	}
 					}
+					else{
+						printf("Username does not exist.\n");	
+					}
 				}
-				printf("Username does not exist.\n");
 	    	break;
 		    case 2:
 			    printf("Pick a username:");
@@ -652,24 +657,6 @@ int home(){
 		        fclose(fptr2);
 		    break;
 		    case 3:
-		    	endTime=time(NULL);
-			int sessionTime=(endTime-startTime)/60;
-			printf("In this session, You played for %d minutes.\n",sessionTime);
-			user1.timePlayed+=sessionTime;
-			struct user temp;
-			FILE *fptr4=fopen("users.txt","r");
-			FILE *temp1=fopen("temp.txt","w");
-			while(fscanf(fptr4,"%s %d %.1f %.1f %.1f %d %.1f %.1f %d",temp.username,&temp.timePlayed,&temp.ticTacToeHighScore,&temp.rockPaperScissorsHighScore,&temp.guessTheNumberHighScore,&temp.guessesLeft,&temp.headsOrTailsHighScore,&temp.rememberTheNumber,&temp.digit)!=EOF){
-				if(strcmp(temp.username,user1.username)==0){
-					temp.timePlayed+=sessionTime;
-					printf("Total time played: %i minutes\n",temp.timePlayed);
-				}
-				fprintf(temp1,"%s %d %.1f %.1f %.1f %d %.1f %.1f %d\n",temp.username,temp.timePlayed,temp.ticTacToeHighScore,temp.rockPaperScissorsHighScore,temp.guessTheNumberHighScore,temp.guessesLeft,temp.headsOrTailsHighScore,temp.rememberTheNumber,temp.digit);
-			};
-			fclose(fptr4);
-			fclose(temp1);
-			remove("users.txt");
-			rename("temp.txt","users.txt");
 			    return 0;
 	    	break;
 	}
